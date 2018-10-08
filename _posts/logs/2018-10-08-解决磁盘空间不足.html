@@ -13,12 +13,13 @@ tag:
 <p>
     今天下午，服务器提示磁盘剩余空间不足，使用df命令查看，发现/目录下的磁盘已经没有多余空间，然后使用fdisk -l查看所有磁盘，发现sdb、sdc两块2T的硬盘未
     被使用，于是开始为之分区，然后挂载:
-    <pre>
+    
     <blockquote>
         
     sudo fdisk /dev/sdc  
     
     </blockquote>
+    <pre>
     之后进入command状态：
     输入 m 查看帮助
     输入 p 查看 /dev/sdb 分区的状态
@@ -53,9 +54,12 @@ tag:
 <blockquote>
     sudo cp -r /home/* /home2
 </blockquote>
-修改/home的名字：
+修改/home和/home2的名字：
 <blockquote>
+    <pre>
     sudo mv /home /homeBackup
+    sudo mv /home2 /home
+</pre>
 </blockquote>
 设置自动挂载，找到sdc的UUID：
 <blockquote>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  
+    <entry>
+      <title><![CDATA[解决服务器磁盘空间不足]]></title>
+      <url>/log/2018/10/08/%E8%A7%A3%E5%86%B3%E7%A3%81%E7%9B%98%E7%A9%BA%E9%97%B4%E4%B8%8D%E8%B6%B3/</url>
+      <content type="text"><![CDATA[    解决服务器磁盘空间不足    今天下午，服务器提示磁盘剩余空间不足，使用df命令查看，发现/目录下的磁盘已经没有多余空间，然后使用fdisk -l查看所有磁盘，发现sdb、sdc两块2T的硬盘未    被使用，于是开始为之分区，然后挂载:                    sudo fdisk /dev/sdc                  之后进入command状态：    输入 m 查看帮助    输入 p 查看 /dev/sdb 分区的状态    输入 n 创建sdb这块硬盘的分区    选 p primary =>输入　p    Partition number =>分一个区所以输入　1    其他的默认回车即可    最后输入 w 保存并退出 Command 状态。然后格式化磁盘:    sudo mkfs.ext4 /dev/sdb1报错，如下:    filesystem with 0 blocks, specify higher inode_ratio (-i) or lower inode count (-N).原因在于Linux内核在重新分区后没有更新分区表，手动读取并更新，执行命令:    blockdev --rereadpt 问题解决，然后挂载磁盘sdc到home目录，但挂载后发现原本home目录中的文件消失了，这是因为home目录中的文件存放在了磁盘sda中，于是首先在/下新建跳板目录：    sudo mkdir /home2    挂载sdc：            sudo mount /dev/sdc /home2    复制home下的文件：    sudo cp -r /home/* /home2修改/home和/home2的名字：        sudo mv /home /homeBackup    sudo mv /home2 /home设置自动挂载，找到sdc的UUID：        sudo blkid配置挂载：        sudo vim /etc/fstab输入：        UUID=yourUUID /home ext4 defaults 0 1保存后，运行sudo mount -a，检查挂载是否正常，然后重启机器。    在配置好磁盘后发现找不到nvidia的驱动了，报错：                NVIDIA-SMI has failed because it couldn't communicate with the NVIDIA driver. Make sure that the latest NVIDIA driver is installed and running.    网上查资料无果，于是重装了NVIDIA Driver。]]></content>
+      <categories>
+        
+          <category> log </category>
+        
+      </categories>
+      <tags>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[Log example]]></title>
+      <url>/2018/09/03/log_example/</url>
+      <content type="text"><![CDATA[日志示例    写成html,放在 'ABCLABS.github,io/_posts'文件夹下即可.html头的格式见日志示例的头部.]]></content>
+      <categories>
+        
+          <category>  </category>
+        
+      </categories>
+      <tags>
+        
+          <tag>  </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+</search>
